@@ -66,6 +66,21 @@ applySorting = initSorting([
 const appRoot = document.querySelector('#app');
 appRoot.appendChild(sampleTable.container);
 
+sampleTable.container.addEventListener('click', (event) => {
+    const button = event.target.closest('button[name="clear"]');
+    if (!button) return;
+
+    event.preventDefault();
+    const fieldName = button.dataset.field;
+    const filterElements = sampleTable.filter.elements;
+    
+    const input = Object.values(filterElements).find(el => el.name === fieldName);
+    if (input) {
+        input.value = '';
+        render();
+    }
+});
+
 async function init() {
     const indexes = await api.getIndexes();
     const filtering = initFiltering(sampleTable.filter.elements);
